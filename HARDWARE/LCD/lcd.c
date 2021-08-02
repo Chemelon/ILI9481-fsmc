@@ -1445,9 +1445,8 @@ void Demo_Menu(void)
 void Demo(void)
 {
 	LCD_Clear(RED);
-	Draw_Font24B(16,4,BLACK,"DevEBox-大越创新");
+	Draw_Font24B(16,4,BLACK,"LCD-Demo");
 	Draw_Font24B(16,40,BLACK,(u8 *)&lcd_id);
-	//LCD_DrawLine(320,480,0,0,BLACK);	
 }
 
 /******************************************************************/
