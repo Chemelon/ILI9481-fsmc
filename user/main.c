@@ -39,9 +39,9 @@
 	 
 	POINT_COLOR=RED;
 	 
-//	sprintf((char*)lcd_id,"LCD ID:%04X",lcddev.id);//将LCD ID打印到lcd_id数组。				 	
+	sprintf((char*)lcd_id,"LCD ID:%04X",lcddev.id);//将LCD ID打印到lcd_id数组。				 	
 
-	Demo();
+	Demo();//简单测试
 	//Demo_Menu();//演示程序
 	//LED0=!LED0;		
 	//LED1=!LED1;

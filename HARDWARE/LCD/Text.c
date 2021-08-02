@@ -308,7 +308,7 @@ void Draw_Font24B(u16 x,u16 y, u16 color, u8*str)
 	width=lcddev.width-x;
 	height=lcddev.height-y;
 	
-	Show_Str(x,y,width,height, str, 24, color, 0);
+	Show_Str(x,y,width,height, str, 24, color, 1);
 	
 	
 }

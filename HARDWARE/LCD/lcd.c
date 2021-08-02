@@ -33,8 +33,8 @@ u16 BACK_COLOR=0xFFFF;  //背景色
 //管理LCD重要参数
 //默认为竖屏
 _lcd_dev lcddev;
-#define LCD_WIDETH 320;
-#define LCD_HEIGHT 480;
+int LCD_WIDETH=320;
+int LCD_HEIGHT=480;
 
 
 
@@ -665,21 +665,29 @@ void LCD_Init(void)
 		
  
 	delay_ms(50); 					// delay 50 ms 
-  
-	lcddev.id=LCD_ReadReg(0x0000);	//读ID  
-  
+  	LCD_WR_REG(0xB9); 
+	LCD_WR_DATA(0XFF);	
+	LCD_WR_DATA(0X83);
+	LCD_WR_DATA(0X69);		
+	LCD_WR_REG(0XBF);				   
+	lcddev.id=LCD_RD_DATA();	//1dummy read 	
+	lcddev.id=LCD_RD_DATA();	//2读到0X02
+	lcddev.id=LCD_RD_DATA();   	//3读取04
+	lcddev.id=LCD_RD_DATA();   	//4读取94
+	lcddev.id<<=8;
+	lcddev.id|=LCD_RD_DATA();   //5读取81
 	if(lcddev.id<0XFF||lcddev.id==0XFFFF||lcddev.id==0X9300)//读到ID不正确,新增lcddev.id==0X9300判断，因为9341在未被复位的情况下会被读成9300
 	{	
  		//尝试9341 ID的读取		
 		LCD_WR_REG(0XD3);				   
 		lcddev.id=LCD_RD_DATA();	  //dummy read 	
  		lcddev.id=LCD_RD_DATA();	  //读到0X00
-  	lcddev.id=LCD_RD_DATA();   	//读取93								   
+  		lcddev.id=LCD_RD_DATA();   	//读取93								   
  		lcddev.id<<=8;
 		lcddev.id|=LCD_RD_DATA();  	//读取41 	  
 		 	
 	}
-	
+
 // 	printf(" LCD ID:%x\r\n",lcddev.id); //打印LCD ID  
 	
 	if(lcddev.id==0X9341)	//9341初始化
@@ -775,9 +783,11 @@ void LCD_Init(void)
 		LCD_WR_DATA(0xef);	 
 		LCD_WR_REG(0x11); //Exit Sleep
 		delay_ms(120);
-		LCD_WR_REG(0x29); //display on	
+		LCD_WR_REG(0x29); //display on
+		LCD_HEIGHT=320;
+		LCD_WIDETH=240;
 	}
-	else
+	if(lcddev.id==0X9481)	//9341初始化
 	{
 LCD_WR_REG(0x11);
 delay_ms(120);
@@ -827,6 +837,8 @@ LCD_WR_DATA(0x55);
 delay_ms(120);
 LCD_WR_REG(0x29);
 LCD_WR_REG(0x2C);
+LCD_HEIGHT=480;
+LCD_WIDETH=320;
 }
 	LCD_Display_Dir(LCD_DIR_Mode);	//选择--屏幕显示方式
 	LCD_LED=1;				//点亮背光
@@ -1432,8 +1444,9 @@ void Demo_Menu(void)
 
 void Demo(void)
 {
-	Draw_Font24B(16,4,MAGENTA,"DevEBox-大越创新");
-	//LCD_Fill(0,0,20,20,RED);
+	LCD_Clear(RED);
+	Draw_Font24B(16,4,BLACK,"DevEBox-大越创新");
+	Draw_Font24B(16,40,BLACK,(u8 *)&lcd_id);
 	//LCD_DrawLine(320,480,0,0,BLACK);	
 }
 

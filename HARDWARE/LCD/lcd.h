@@ -27,9 +27,8 @@ typedef struct
 }_lcd_dev; 	  
 
 
-
-
 //LCD参数
+extern u8 lcd_id[12];
 extern _lcd_dev lcddev;	//管理LCD重要参数
 //LCD的画笔颜色和背景色	   
 extern u16  POINT_COLOR;//默认红色    
