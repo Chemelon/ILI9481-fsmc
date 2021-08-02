@@ -1,5 +1,8 @@
 OBJ/
 STM32F10x_FWLib/
 CORE/
-USER/
+USER/*
+!USER/*.c
+!USER/*.h
+!USER/*.uvproj
 .vscode/
